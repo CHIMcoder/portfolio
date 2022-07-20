@@ -1,0 +1,2599 @@
+
+
+spool 'C:\Users\Jamarian Cleveland\Desktop\project3_jmc.txt'
+
+set echo on
+
+--Project 3
+--Jamarian Cleveland
+--INSY 3304 |Section 002
+
+--Formatting for Project
+SET LINESIZE 150
+
+SET PAGESIZE 50
+
+COLUMN CustType FORMAT a15
+COLUMN RATETYPE FORMAT a15
+COLUMN AgentType FORMAT a15
+COLUMN RoomType FORMAT a15
+
+--Project 2
+
+DROP TABLE RESDETAIL_jmc;
+DROP TABLE RESERVATION_jmc;
+DROP TABLE CUSTOMER_jmc;
+DROP TABLE AGENT_jmc;
+DROP TABLE ROOM_jmc;
+DROP TABLE ROOMTYPE_jmc;
+DROP TABLE AGENTTYPE_jmc;
+DROP TABLE RATETYPE_jmc;
+DROP TABLE CUSTTYPE_jmc;
+
+
+--Part IA
+
+CREATE TABLE CUSTTYPE_jmc(
+CustType CHAR(1),
+CustDesc VARCHAR(20) NOT NULL,
+PRIMARY KEY (CustType)
+);
+
+CREATE TABLE RATETYPE_jmc(
+RateType CHAR(1),
+RateDesc VARCHAR(20) NOT NULL,
+PRIMARY KEY (RateType)
+);
+
+CREATE TABLE AGENTTYPE_jmc(
+AgentType CHAR(2),
+AgentDesc VARCHAR(20) NOT NULL,
+PRIMARY KEY (AgentType)
+);
+
+CREATE TABLE ROOMTYPE_jmc(
+RoomType CHAR(2),
+RoomDesc VARCHAR(20) NOT NULL,
+PRIMARY KEY (RoomType)
+);
+
+CREATE TABLE ROOM_jmc(
+	RoomNum NUMBER(4),
+	RoomType char(2) NOT NULL,
+	PRIMARY KEY (RoomNum),
+	FOREIGN KEY (RoomType) REFERENCES ROOMTYPE_jmc
+);
+
+CREATE TABLE AGENT_jmc(
+AgentID NUMBER(4),
+AgentFName VARCHAR(20)NOT NULL,
+AgentLName VARCHAR(20)NOT NULL,
+AgentType CHAR(2)NOT NULL,
+PRIMARY KEY (AgentID),
+FOREIGN KEY (AgentType) REFERENCES AGENTTYPE_jmc
+);
+
+CREATE TABLE CUSTOMER_jmc(
+CustID NUMBER(4),
+CustFName VARCHAR(20) NOT NULL,
+CustLName VARCHAR (20) NOT NULL,
+CustPhone CHAR(10),
+CustType CHAR(1) NOT NULL,
+LoyaltyID NUMBER (4),
+PRIMARY KEY (CustID),
+FOREIGN KEY (CustType) REFERENCES CUSTTYPE_jmc
+);
+
+CREATE TABLE RESERVATION_jmc(
+ResNum NUMBER(4),
+CheckIn DATE NOT NULL,
+CheckOut DATE NOT NULL,
+CustID NUMBER(4) NOT NULL,
+AgentID NUMBER(4) NOT NULL,
+GuestCount NUMBER (4) NOT NULL,
+RateType CHAR (1) NOT NULL,
+PRIMARY KEY (ResNum),
+FOREIGN KEY (RateType)REFERENCES RATETYPE_jmc,
+FOREIGN KEY (AgentID)REFERENCES AGENT_jmc
+);
+
+CREATE TABLE RESDETAIL_jmc(
+ResNum NUMBER (4),
+RoomNum NUMBER (4),
+RateAmt NUMBER(4) NOT NULL,
+PRIMARY KEY (ResNum,RoomNum),
+FOREIGN KEY (ResNum) REFERENCES RESERVATION_jmc,
+FOREIGN KEY (RoomNum) REFERENCES ROOM_jmc
+);
+
+--IB
+
+DESCRIBE CUSTTYPE_jmc
+DESCRIBE RATETYPE_jmc
+DESCRIBE AGENTTYPE_jmc
+DESCRIBE ROOMTYPE_jmc
+DESCRIBE ROOM_jmc
+DESCRIBE AGENT_jmc
+DESCRIBE CUSTOMER_jmc
+DESCRIBE RESERVATION_jmc
+DESCRIBE RESDETAIL_jmc
+
+--IIA
+
+--CUSTTYPE
+
+INSERT INTO CUSTTYPE_jmc
+VALUES ('C','Corporate');
+
+INSERT INTO CUSTTYPE_jmc
+VALUES ('I','Indivdual');
+
+
+
+--RATETYPE
+INSERT INTO RATETYPE_jmc
+VALUES ('C','Corporate');
+
+INSERT INTO RATETYPE_jmc
+VALUES ('S','Standard');
+
+INSERT INTO RATETYPE_jmc
+VALUES ('W','Weekend');
+
+
+--AGENTYPE
+INSERT INTO AGENTTYPE_jmc
+VALUES('FD','Front Desk');
+
+INSERT INTO AGENTTYPE_jmc
+VALUES('T','Telephone');
+
+INSERT INTO AGENTTYPE_jmc
+VALUES('RC','Online Res Center');
+
+--ROOMTYPE
+
+
+INSERT INTO ROOMTYPE_jmc
+VALUES('K','King Bed');
+
+INSERT INTO ROOMTYPE_jmc
+VALUES('D','2 Double Bed');
+
+INSERT INTO ROOMTYPE_jmc
+VALUES('KS','King Suite');
+
+--ROOM
+
+INSERT INTO ROOM_jmc
+VALUES(224,'K');
+
+INSERT INTO ROOM_jmc
+VALUES(225,'D');
+
+INSERT INTO ROOM_jmc
+VALUES(305,'D');
+
+INSERT INTO ROOM_jmc
+VALUES(320,'D');
+
+INSERT INTO ROOM_jmc
+VALUES(321,'K');
+
+INSERT INTO ROOM_jmc
+VALUES(302,'K');
+
+INSERT INTO ROOM_jmc
+VALUES(501,'KS');
+
+INSERT INTO ROOM_jmc
+VALUES(502,'KS');
+
+INSERT INTO ROOM_jmc
+VALUES(409,'D');
+
+--AGENT
+
+INSERT INTO AGENT_jmc
+VALUES(20,'Megan','Smith','FD');
+
+INSERT INTO AGENT_jmc
+VALUES(5,'Janice','May','T');
+
+INSERT INTO AGENT_jmc
+VALUES(14,'John','King','RC');
+
+INSERT INTO AGENT_jmc
+VALUES(28,'Ray','Schultz','T');
+
+--CUSTOMER
+
+
+INSERT INTO CUSTOMER_jmc
+VALUES(85,'Wesley','Tanner','8175551193','C',323);
+
+
+INSERT INTO CUSTOMER_jmc
+VALUES(100,'Breanna','Rhodes','2145559191','I',129);
+
+INSERT INTO CUSTOMER_jmc
+VALUES(15,'Jeff','Miner',NULL,'I',NULL);
+
+INSERT INTO CUSTOMER_jmc
+VALUES(77,'Kim','Jackson','8175554911','C',210);
+
+INSERT INTO CUSTOMER_jmc
+VALUES(119,'Mary','Vaughn','8175552334','I',118);
+
+INSERT INTO CUSTOMER_jmc
+VALUES(97,'Chris','Mancha','4695553440','I',153);
+
+INSERT INTO CUSTOMER_jmc
+VALUES(28,'Renee','Walker','2145559285','I',135);
+
+INSERT INTO CUSTOMER_jmc
+VALUES(23,'Shelby','Day',NULL,'I',NULL);
+
+
+INSERT INTO RESERVATION_jmc
+VALUES(1001,'5-SEP-2020','7-SEP-2020',85,20,2,'C');
+
+INSERT INTO RESERVATION_jmc
+VALUES(1002,'1-SEP-2020','10-SEP-2020',100,5,4,'S');
+
+INSERT INTO RESERVATION_jmc
+VALUES(1003,'9-SEP-2020','11-SEP-2020',15,14,3,'W');
+
+INSERT INTO RESERVATION_jmc
+VALUES(1004,'12-SEP-2020','14-SEP-2020',77,28,4,'C');
+
+
+INSERT INTO RESERVATION_jmc
+VALUES(1005,'15-SEP-2020','18-SEP-2020',119,20,1,'S');
+
+INSERT INTO RESERVATION_jmc
+VALUES(1006,'24-SEP-2020','26-SEP-2020',97,14,2,'W');
+
+INSERT INTO RESERVATION_jmc
+VALUES(1007,'20-SEP-2020','25-SEP-2020',100,5,3,'W');
+
+INSERT INTO RESERVATION_jmc
+VALUES(1008,'1-OCT-2020','3-OCT-2020',85,5,3,'W');
+
+INSERT INTO RESERVATION_jmc
+VALUES(1009,'1-OCT-2020','4-OCT-2020',28,5,3,'W');
+
+INSERT INTO RESERVATION_jmc
+VALUES(1010,'1-OCT-2020','9-OCT-2020',23,28,4,'W');
+
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1001,224,120);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1001,225,125);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1002,305,149);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1003,409,99);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1004,320,110);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1004,409,105);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1004,321,112);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1005,302,139);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1006,502,119);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1006,302,119);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1007,320,89);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1007,321,89);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1009,502,129);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1009,409,129);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1010,225,109);
+
+COMMIT;
+
+--Part IIB
+
+SELECT * FROM CUSTTYPE_jmc ;
+
+SELECT * FROM RATETYPE_jmc ;
+
+SELECT * FROM AGENTTYPE_jmc ;
+
+SELECT * FROM ROOMTYPE_jmc ;
+
+SELECT * FROM ROOM_jmc ; 
+
+SELECT * FROM AGENT_jmc ;
+
+SELECT * FROM CUSTOMER_jmc ;
+
+SELECT * FROM RESERVATION_jmc ; 
+
+SELECT * FROM RESDETAIL_jmc ;
+
+--Part III
+
+UPDATE CUSTOMER_jmc
+SET CustPhone = '2145551234'
+WHERE CustID = '100';
+
+INSERT INTO ROOMTYPE_jmc
+VALUES('DS','Double Suite');
+
+INSERT INTO ROOM_jmc
+VALUES(226,'KS');
+
+INSERT INTO ROOM_jmc
+VALUES(227,'D');
+
+INSERT INTO ROOM_jmc
+VALUES(410,'DS');
+
+UPDATE RESERVATION_jmc
+SET CheckIn = '9-OCT-2020'
+SET CheckOut = '12-OCT-2020';
+WHERE ResNum = 1010
+
+INSERT INTO RESERVATION_jmc
+VALUES (1011,'3-OCT-2020','6-OCT-2020',120,5,3,'S');
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1011,226,159);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1011,227,149);
+
+INSERT INTO RESDETAIL_jmc
+VALUES(1003,410,129);
+
+INSERT INTO CUSTOMER_jmc
+VALUES(120,'Amanda','Green',NULL,'I',NULL);
+
+UPDATE RESDETAIL_jmc
+SET RateAmt = 129
+WHERE ResNum = 1005;
+
+
+
+
+SELECT * FROM CUSTTYPE_jmc 
+ORDER BY CustType;
+
+SELECT * FROM RATETYPE_jmc 
+ORDER BY RateType;
+
+SELECT * FROM AGENTTYPE_jmc 
+ORDER BY AgentType;
+
+SELECT * FROM ROOMTYPE_jmc 
+ORDER BY RoomType;
+
+SELECT * FROM ROOM_jmc 
+ORDER BY RoomNum;
+
+SELECT * FROM AGENT_jmc 
+ORDER BY AgentID;
+
+SELECT * FROM CUSTOMER_jmc 
+ORDER BY CustID;
+
+SELECT * FROM RESERVATION_jmc 
+ORDER BY ResNum;
+
+SELECT * FROM RESDETAIL_jmc 
+ORDER BY ResNum,RoomNum;
+
+--Part I for Project 3--
+UPDATE RESDETAIL_jmc
+SET RoomNum = 321
+WHERE RateAmt = 109;
+COMMIT;
+UPDATE RESERVATION_jmc
+SET RateType = 'C'
+WHERE ResNum = 1010;
+COMMIT;
+UPDATE RESERVATION_jmc
+SET CheckOut =  '8-SEP-2020'
+WHERE ResNum = 1001;
+COMMIT;
+--Part II for Project 3--
+UPDATE CUSTOMER_jmc
+SET CustPhone = '2145551000'
+WHERE CustID = 120;
+COMMIT;
+UPDATE CUSTOMER_jmc
+SET LoyaltyID = 403
+WHERE CustID =120;
+COMMIT;
+--Part III for Project 3--
+INSERT INTO ROOM_jmc
+VALUES(301,'D');
+COMMIT;
+INSERT INTO ROOM_jmc
+VALUES(303,'DS');
+COMMIT;
+INSERT INTO ROOM_jmc
+VALUES(304,'KS');
+COMMIT;
+--Part IV for Project 3--
+INSERT INTO RESDETAIL_jmc
+VALUES(1005,303,139);
+COMMIT;
+INSERT INTO RESDETAIL_jmc
+VALUES(1005,304,149);
+COMMIT;
+--Part V for Project 3--
+INSERT INTO Customer_jmc 
+VALUES ((select max (CustID) from Customer_jmc) +1, 'Susan', 'White', '2145552020','C',NULL) ;
+COMMIT;
+
+--Part VI for Project 3--
+
+--COMMIT all changes.
+
+--Part VII for Project 3--
+SELECT CUSTID,CUSTFNAME,CUSTLNAME 
+FROM CUSTOMER_jmc
+WHERE CUSTPHONE IS NULL;
+COMMIT;
+--Part VIII for Project 3--
+select avg (RateAmt) as "AvgRate"
+FROM RESDETAIL_jmc
+COMMIT;
+--Part IX for Project 3--
+select distinct count(RoomNum)as "RoomResCount"
+FROM RESDETAIL_jmc
+COMMIT;
+--Part X for Project 3--
+select RoomType as "RoomType",count(RoomNum) as "RoomNum"
+FROM ROOM_jmc
+GROUP BY ROOMTYPE;
+COMMIT;
+--Part XI for Project 3--
+
+SELECT RD.ResNum AS "ResNum",
+	CheckIn AS "CheckIn",CheckOut AS "Checkout",COUNT (RoomNum) AS "RoomCount"
+FROM Reservation_jmc R,ResDetail_jmc RD
+WHERE R.ResNum = RD.ResNum
+GROUP BY RD.ResNum,CheckIn,CheckOut;
+COMMIT;
+--Part XII for Project 3--
+SELECT R.CUSTID AS "CustomerID",
+(C.CustFName|| ' '||C.CustLName) AS "CustomerName",
+COUNT(R.ResNum) AS "ResCount"
+FROM Reservation_jmc R ,Customer_jmc C
+WHERE R.CustID = C.CustID
+GROUP BY R.CustID,C.CustFName,C.CustLName
+ORDER BY COUNT(R.ResNum) DESC,r.CustID ASC;
+--Part XIII for Project 3--
+ SELECT ResNum AS "ResNum" ,RoomNum AS "RoomNum",RateAmt AS "RateAmt"
+ FROM ResDetail_jmc
+ ORDER BY ResNum ASC,RoomNum ASC;
+ COMMIT;
+ --Part XIV for Project 3--
+SELECT R.RateType AS "RateType",RateDesc AS "Description",
+COUNT(GuestCount) AS "ResCount"
+FROM Reservation_jmc R ,RateType_jmc RT
+WHERE R.RateType = RT.RateType
+GROUP BY R.RateType,RateDesc
+ORDER BY COUNT(GuestCount) DESC;
+--Part XV of Project 3--
+SELECT CustID AS "Customer_ID",CustFName AS "First_Name",CustLName AS "Last_Name",
+'(',(SUBSTR(CustPhone,1,3) ||')'||SUBSTR(CustPhone,4,3) ||'-'|| SUBSTR(CustPhone,7,4))
+AS "Phone"
+FROM Customer_jmc
+ORDER BY CustID;
+COMMIT;
+--Part XVI of Project 3--
+SELECT ResNum AS "ResNum",RD.RoomNum AS "RmNum",
+RM.RoomType AS "RmType",RoomDesc AS "RmDesc",
+RT.RateType AS "RateType",RateDesc AS "RateDesc",
+TO_CHAR (RateAmt,'$999.99') AS "RateAmt"
+FROM ResDetail_jmc RD,ROOM_jmc RM,
+RoomType_jmc RMT,RateType_jmc RT
+WHERE RD.RoomNum = RM.RoomNum AND 
+RM.RoomType = RMT.RoomType AND 
+RT.RateType = RT.RateType AND 
+(ResNum,RateAmt) IN
+(SELECT ResNum,MIN(RateAmt)
+From ResDetail_jmc RD
+GROUP BY ResNum)
+ORDER BY RateAmt DESC;
+COMMIT;
+--Part XVII for Project 3--
+SELECT CT.CustType AS "CustType",CustDesc AS "Description" ,
+COUNT (CustID) AS "Count"
+FROM CustType_jmc CT,Customer_jmc C
+WHERE CT.CustType =C.CustType
+GROUP BY CT.CustType,CustDesc
+ORDER BY COUNT (CustID)DESC;
+COMMIT;
+--Part XIX for Project 3--
+SELECT RD.ResNum AS "ResNum",RD.RoomNum,RM.RoomType,RMD.RoomDesc,
+TO_CHAR(RateAmt,'$999.99' ) AS "RateAmt"
+FROM ResDetail_jmc RD,Reservation_jmc R,Room_jmc RM, RoomType_jmc RMD
+WHERE RD.ResNum = R.ResNum AND
+RM.RoomType = RMD.RoomType AND 
+RD.RateAmt <= '119.00'
+ORDER BY RD.RateAmt DESC,RD.ResNum ASC;
+COMMIT;
+--Part XX for Project 3--
+SELECT RD.ResNum AS "ResID",TO_CHAR(R.CheckIn, 'mm-dd-yy') AS "CheckInDate",
+	TO_CHAR(R.CheckOut,'mm-dd-yy') AS "CheckOutDate",
+	R.CustID,CustFName,CustLName,COUNT(RoomNum)
+FROM ResDetail_jmc RD,Customer_jmc C,Reservation_jmc R 
+WHERE RD.ResNum = R.ResNum AND 
+R.CustID = C.CustID
+GROUP BY RD.ResNum,CheckIn,CheckOut,R.CustID,CustFName,CustLName
+ORDER BY RD.ResNum;
+COMMIT;
+--XXI for Project 3--
+SELECT RD.ResNum AS "ResNum",RD.RoomNum AS "RmNum",
+RM.RoomType AS "RMType",RT.RateType AS "RateType",
+TO_CHAR (RateAmt ,'$999.99') AS "RateAmt"
+FROM ResDetail_jmc RD,Room_jmc RM,RoomType_jmc RMT,
+RateType_jmc RT
+WHERE RD.RoomNum = RM.RoomNum AND 
+RM.RoomType = RMT.RoomType AND 
+RT.RateType = RT.RateType And 
+ResNum = '1005 ' AND 
+(ResNum,RateAmt)IN
+(SELECT ResNum,MAX(RateAmt)
+FROM ResDetail_jmc
+GROUP BY ResNum);
+COMMIT;
+--Part XXII for Project 3--
+SELECT AG.AgentType AS "AgentType", AgentDesc AS "Desc",
+COUNT(AgentID)
+From Agent_jmc AG,AgentType_jmc AGT 
+WHERE AG.AgentType = AGT.AgentType
+GROUP BY AG.AgentType,AgentDesc
+Order BY COUNT (AgentID);
+COMMIT;
+--Part XXIII for Project 3--
+Select ResNum AS "ResNum",RD.RoomNum AS "RoomNum",RoomDesc AS "RoomTypeDesc",RateDesc AS "RateTypeDesc",RateAmt
+FROM ResDetail_jmc RD,Room_jmc RM,
+RoomType_jmc RMT,RateType_jmc RT
+WHERE RD.RoomNum = RM.RoomNum AND 
+RM.RoomType = RMT.RoomType AND
+RT.RateType = RT.RateType AND 
+RateAmt >
+(SELECT AVG(RateAmt)
+FROM ResDetail_jmc)
+ORDER BY RD.RoomNum;
+COMMIT;
+--Part XXIV for Project 3--
+SELECT RD.RoomNum AS "RmNum",RoomDesc AS "RmType",
+RateDesc AS "RateType",RateAmt AS "RateAmt"
+FROM ResDetail_jmc RD,Room_jmc RM,
+RoomType_jmc RMT,RateType_jmc RT
+WHERE RD.RoomNum =RM.RoomNum AND 
+RM.RoomType = RMT.RoomType AND 
+RT.RateType = RT.RateType AND 
+RateAmt > '115'
+GROUP BY RD.RoomNum,RoomDesc,RateDesc,RateAmt
+ORDER BY RateAmt DESC;
+--Part XXV for Project 3--
+SELECT RD.RoomNum,RoomType,Count (ResNum)
+FROM ResDetail_jmc RD,Room_jmc RM
+WHERE RD.RoomNum = RM.RoomNum
+GROUP BY RD.RoomNum,RoomType
+Order BY COUNT (ResNum);
+COMMIT;
+--Part XXVI for Project 3--
+SELECT CustID AS "CustID",CustFName AS "FirstName",CustLName AS "Last_Name",
+'(',(SUBSTR(CustPhone,1,3)||')'||SUBSTR(CustPhone,4,3) ||'-'|| SUBSTR(CustPhone,7,4))
+AS "Phone"
+FROM Customer_jmc
+WHERE LoyaltyID IS NOT NULL;
+COMMIT;
+--Part XXVII for Project 3--
+SELECT RD.RoomNum AS "Room",RoomDesc AS "RoomType",
+RateDesc AS "RateType",
+TO_CHAR(RateAmt,'$999.99') AS "Amt"
+FROM ResDetail_jmc RD,Room_jmc RM,
+RoomType_jmc RMT,RateType_jmc RT
+WHERE RD.RoomNum = RM.RoomNUM AND 
+RT.RateType = RT.RateType AND 
+ResNum = '1005' AND 
+(ResNum,RateAmt) IN
+(SELECT ResNum,MAX(RateAmt)
+FROM ResDetail_jmc
+GROUP BY ResNum);
+COMMIT;
+--Part XXVIII for Project 3--
+SELECT ResNum,CheckIn,CheckOut,
+C.CustID,CustLName,AG.AgentID,AgentLName
+FROM Agent_jmc AG,Customer_jmc C,Reservation_jmc R
+WHERE C.CustID = R.CustID AND 
+AG.AgentID = R.AgentID AND 
+CheckIn <='26-SEP-2020'
+ORDER BY CheckIn ASC,ResNum ASC;
+COMMIT;
+--Part XXIX for Project 3--
+SELECT RD.RoomNum,RM.RoomType,RoomDesc,RateAmt
+FROM Room_jmc RM,RoomType_jmc RMT,ResDetail_jmc RD
+WHERE RD.RoomNum = RM.RoomNum AND 
+RM.RoomType = RMT.RoomType AND 
+RateAmt > ALL 
+(SELECT AVG (RateAmt)
+FROM ResDetail_jmc)
+ORDER BY RateAmt DESC,RoomNum ASC;
+--Part XXX for Project 3--
+SELECT COUNT (LoyaltyID) AS "LoyaltyID"
+FROM Customer_jmc;
+COMMIT;
+--Part XXXI for Project 3--
+SELECT AG.AgentID AS "AgentID",
+(AgentFName || ' '|| AgentLName) AS "Agent",
+COUNT (ResNum) AS "ResCount"
+FROM Agent_jmc AG,Reservation_jmc R
+WHERE AG.AgentID = R.AgentID
+GROUP BY AG.AgentID,AgentFName,AgentLName
+ORDER BY COUNT (ResNum) DESC;
+COMMIT;
+--Part XXXII for Project 3--
+SELECT R.AgentID AS "AgentID",AgentFName AS "FirstName",
+AgentLName AS "LastName",COUNT(ResNum) AS "ResCount"
+FROM Reservation_jmc R ,Agent_jmc AG
+GROUP BY R.AgentID,AgentFName,AgentLName
+HAVING COUNT(ResNum) > 1
+ORDER BY COUNT(ResNum)DESC,R.AgentID ASC;
+COMMIT;
+--Part XXXIII for Project 3--
+SELECT CustID AS "Customer_ID",CustFName AS "First_Name",
+CustLName AS "Last_Name"
+FROM Customer_jmc
+WHERE CustFName LIKE 'W%' OR CustLName Like 'W%'
+ORDER BY CustLName;
+COMMIT;
+--Part XXXIV for Project 3--
+SELECT C.CustID AS "CustID",CustFName AS "FirstName",
+CustLName AS "LastName"
+FROM Customer_jmc C LEFT OUTER JOIN Reservation_jmc R
+ON R.CustID = C.CustID
+GROUP BY C.CustID,CustFName,CustLName
+HAVING COUNT (ResNum) < 1;
+COMMIT;
+--XXXV for Project 3--
+SELECT RD.ResNum AS "ResNum",RoomNum AS "RoomNum",
+((CheckOut - CheckIn)*RateAmt) AS "TotalCharge"
+FROM ResDetail_jmc RD,Reservation_jmc R 
+WHERE RD.ResNum = R.ResNum AND 
+RD.ResNum = '1005';
+COMMIT;
+spool off
+set echo off  
+
+--Printed Output--
+/*SQL*Plus: Release 11.2.0.2.0 Production on Fri Apr 30 09:10:01 2021
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect system
+Enter password:
+Connected.
+SQL> start "C:\Users\Jamarian Cleveland\Desktop\project3_jmc.sql"
+SQL>
+SQL> --Project 3
+SQL> --Jamarian Cleveland
+SQL> --INSY 3304 |Section 002
+SQL>
+SQL> --Formatting for Project
+SQL> SET LINESIZE 150
+SQL>
+SQL> SET PAGESIZE 50
+SQL>
+SQL> COLUMN CustType FORMAT a15
+SQL> COLUMN RATETYPE FORMAT a15
+SQL> COLUMN AgentType FORMAT a15
+SQL> COLUMN RoomType FORMAT a15
+SQL>
+SQL> --Project 2
+SQL>
+SQL> DROP TABLE RESDETAIL_jmc;
+
+Table dropped.
+
+SQL> DROP TABLE RESERVATION_jmc;
+
+Table dropped.
+
+SQL> DROP TABLE CUSTOMER_jmc;
+
+Table dropped.
+
+SQL> DROP TABLE AGENT_jmc;
+
+Table dropped.
+
+SQL> DROP TABLE ROOM_jmc;
+
+Table dropped.
+
+SQL> DROP TABLE ROOMTYPE_jmc;
+
+Table dropped.
+
+SQL> DROP TABLE AGENTTYPE_jmc;
+
+Table dropped.
+
+SQL> DROP TABLE RATETYPE_jmc;
+
+Table dropped.
+
+SQL> DROP TABLE CUSTTYPE_jmc;
+
+Table dropped.
+
+SQL>
+SQL>
+SQL> --Part IA
+SQL>
+SQL> CREATE TABLE CUSTTYPE_jmc(
+  2  CustType CHAR(1),
+  3  CustDesc VARCHAR(20) NOT NULL,
+  4  PRIMARY KEY (CustType)
+  5  );
+
+Table created.
+
+SQL>
+SQL> CREATE TABLE RATETYPE_jmc(
+  2  RateType CHAR(1),
+  3  RateDesc VARCHAR(20) NOT NULL,
+  4  PRIMARY KEY (RateType)
+  5  );
+
+Table created.
+
+SQL>
+SQL> CREATE TABLE AGENTTYPE_jmc(
+  2  AgentType CHAR(2),
+  3  AgentDesc VARCHAR(20) NOT NULL,
+  4  PRIMARY KEY (AgentType)
+  5  );
+
+Table created.
+
+SQL>
+SQL> CREATE TABLE ROOMTYPE_jmc(
+  2  RoomType CHAR(2),
+  3  RoomDesc VARCHAR(20) NOT NULL,
+  4  PRIMARY KEY (RoomType)
+  5  );
+
+Table created.
+
+SQL>
+SQL> CREATE TABLE ROOM_jmc(
+  2          RoomNum NUMBER(4),
+  3          RoomType char(2) NOT NULL,
+  4          PRIMARY KEY (RoomNum),
+  5          FOREIGN KEY (RoomType) REFERENCES ROOMTYPE_jmc
+  6  );
+
+Table created.
+
+SQL>
+SQL> CREATE TABLE AGENT_jmc(
+  2  AgentID NUMBER(4),
+  3  AgentFName VARCHAR(20)NOT NULL,
+  4  AgentLName VARCHAR(20)NOT NULL,
+  5  AgentType CHAR(2)NOT NULL,
+  6  PRIMARY KEY (AgentID),
+  7  FOREIGN KEY (AgentType) REFERENCES AGENTTYPE_jmc
+  8  );
+
+Table created.
+
+SQL>
+SQL> CREATE TABLE CUSTOMER_jmc(
+  2  CustID NUMBER(4),
+  3  CustFName VARCHAR(20) NOT NULL,
+  4  CustLName VARCHAR (20) NOT NULL,
+  5  CustPhone CHAR(10),
+  6  CustType CHAR(1) NOT NULL,
+  7  LoyaltyID NUMBER (4),
+  8  PRIMARY KEY (CustID),
+  9  FOREIGN KEY (CustType) REFERENCES CUSTTYPE_jmc
+ 10  );
+
+Table created.
+
+SQL>
+SQL> CREATE TABLE RESERVATION_jmc(
+  2  ResNum NUMBER(4),
+  3  CheckIn DATE NOT NULL,
+  4  CheckOut DATE NOT NULL,
+  5  CustID NUMBER(4) NOT NULL,
+  6  AgentID NUMBER(4) NOT NULL,
+  7  GuestCount NUMBER (4) NOT NULL,
+  8  RateType CHAR (1) NOT NULL,
+  9  PRIMARY KEY (ResNum),
+ 10  FOREIGN KEY (RateType)REFERENCES RATETYPE_jmc,
+ 11  FOREIGN KEY (AgentID)REFERENCES AGENT_jmc
+ 12  );
+
+Table created.
+
+SQL>
+SQL> CREATE TABLE RESDETAIL_jmc(
+  2  ResNum NUMBER (4),
+  3  RoomNum NUMBER (4),
+  4  RateAmt NUMBER(4) NOT NULL,
+  5  PRIMARY KEY (ResNum,RoomNum),
+  6  FOREIGN KEY (ResNum) REFERENCES RESERVATION_jmc,
+  7  FOREIGN KEY (RoomNum) REFERENCES ROOM_jmc
+  8  );
+
+Table created.
+
+SQL>
+SQL> --IB
+SQL>
+SQL> DESCRIBE CUSTTYPE_jmc
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ CUSTTYPE                                                                            NOT NULL CHAR(1)
+ CUSTDESC                                                                            NOT NULL VARCHAR2(20)
+
+SQL> DESCRIBE RATETYPE_jmc
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ RATETYPE                                                                            NOT NULL CHAR(1)
+ RATEDESC                                                                            NOT NULL VARCHAR2(20)
+
+SQL> DESCRIBE AGENTTYPE_jmc
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ AGENTTYPE                                                                           NOT NULL CHAR(2)
+ AGENTDESC                                                                           NOT NULL VARCHAR2(20)
+
+SQL> DESCRIBE ROOMTYPE_jmc
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ ROOMTYPE                                                                            NOT NULL CHAR(2)
+ ROOMDESC                                                                            NOT NULL VARCHAR2(20)
+
+SQL> DESCRIBE ROOM_jmc
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ ROOMNUM                                                                             NOT NULL NUMBER(4)
+ ROOMTYPE                                                                            NOT NULL CHAR(2)
+
+SQL> DESCRIBE AGENT_jmc
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ AGENTID                                                                             NOT NULL NUMBER(4)
+ AGENTFNAME                                                                          NOT NULL VARCHAR2(20)
+ AGENTLNAME                                                                          NOT NULL VARCHAR2(20)
+ AGENTTYPE                                                                           NOT NULL CHAR(2)
+
+SQL> DESCRIBE CUSTOMER_jmc
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ CUSTID                                                                              NOT NULL NUMBER(4)
+ CUSTFNAME                                                                           NOT NULL VARCHAR2(20)
+ CUSTLNAME                                                                           NOT NULL VARCHAR2(20)
+ CUSTPHONE                                                                                    CHAR(10)
+ CUSTTYPE                                                                            NOT NULL CHAR(1)
+ LOYALTYID                                                                                    NUMBER(4)
+
+SQL> DESCRIBE RESERVATION_jmc
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ RESNUM                                                                              NOT NULL NUMBER(4)
+ CHECKIN                                                                             NOT NULL DATE
+ CHECKOUT                                                                            NOT NULL DATE
+ CUSTID                                                                              NOT NULL NUMBER(4)
+ AGENTID                                                                             NOT NULL NUMBER(4)
+ GUESTCOUNT                                                                          NOT NULL NUMBER(4)
+ RATETYPE                                                                            NOT NULL CHAR(1)
+
+SQL> DESCRIBE RESDETAIL_jmc
+ Name                                                                                Null?    Type
+ ----------------------------------------------------------------------------------- -------- --------------------------------------------------------
+ RESNUM                                                                              NOT NULL NUMBER(4)
+ ROOMNUM                                                                             NOT NULL NUMBER(4)
+ RATEAMT                                                                             NOT NULL NUMBER(4)
+
+SQL>
+SQL> --IIA
+SQL>
+SQL> --CUSTTYPE
+SQL>
+SQL> INSERT INTO CUSTTYPE_jmc
+  2  VALUES ('C','Corporate');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO CUSTTYPE_jmc
+  2  VALUES ('I','Indivdual');
+
+1 row created.
+
+SQL>
+SQL>
+SQL>
+SQL> --RATETYPE
+SQL> INSERT INTO RATETYPE_jmc
+  2  VALUES ('C','Corporate');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RATETYPE_jmc
+  2  VALUES ('S','Standard');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RATETYPE_jmc
+  2  VALUES ('W','Weekend');
+
+1 row created.
+
+SQL>
+SQL>
+SQL> --AGENTYPE
+SQL> INSERT INTO AGENTTYPE_jmc
+  2  VALUES('FD','Front Desk');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO AGENTTYPE_jmc
+  2  VALUES('T','Telephone');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO AGENTTYPE_jmc
+  2  VALUES('RC','Online Res Center');
+
+1 row created.
+
+SQL>
+SQL> --ROOMTYPE
+SQL>
+SQL>
+SQL> INSERT INTO ROOMTYPE_jmc
+  2  VALUES('K','King Bed');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOMTYPE_jmc
+  2  VALUES('D','2 Double Bed');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOMTYPE_jmc
+  2  VALUES('KS','King Suite');
+
+1 row created.
+
+SQL>
+SQL> --ROOM
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(224,'K');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(225,'D');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(305,'D');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(320,'D');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(321,'K');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(302,'K');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(501,'KS');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(502,'KS');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(409,'D');
+
+1 row created.
+
+SQL>
+SQL> --AGENT
+SQL>
+SQL> INSERT INTO AGENT_jmc
+  2  VALUES(20,'Megan','Smith','FD');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO AGENT_jmc
+  2  VALUES(5,'Janice','May','T');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO AGENT_jmc
+  2  VALUES(14,'John','King','RC');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO AGENT_jmc
+  2  VALUES(28,'Ray','Schultz','T');
+
+1 row created.
+
+SQL>
+SQL> --CUSTOMER
+SQL>
+SQL>
+SQL> INSERT INTO CUSTOMER_jmc
+  2  VALUES(85,'Wesley','Tanner','8175551193','C',323);
+
+1 row created.
+
+SQL>
+SQL>
+SQL> INSERT INTO CUSTOMER_jmc
+  2  VALUES(100,'Breanna','Rhodes','2145559191','I',129);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO CUSTOMER_jmc
+  2  VALUES(15,'Jeff','Miner',NULL,'I',NULL);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO CUSTOMER_jmc
+  2  VALUES(77,'Kim','Jackson','8175554911','C',210);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO CUSTOMER_jmc
+  2  VALUES(119,'Mary','Vaughn','8175552334','I',118);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO CUSTOMER_jmc
+  2  VALUES(97,'Chris','Mancha','4695553440','I',153);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO CUSTOMER_jmc
+  2  VALUES(28,'Renee','Walker','2145559285','I',135);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO CUSTOMER_jmc
+  2  VALUES(23,'Shelby','Day',NULL,'I',NULL);
+
+1 row created.
+
+SQL>
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1001,'5-SEP-2020','7-SEP-2020',85,20,2,'C');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1002,'1-SEP-2020','10-SEP-2020',100,5,4,'S');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1003,'9-SEP-2020','11-SEP-2020',15,14,3,'W');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1004,'12-SEP-2020','14-SEP-2020',77,28,4,'C');
+
+1 row created.
+
+SQL>
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1005,'15-SEP-2020','18-SEP-2020',119,20,1,'S');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1006,'24-SEP-2020','26-SEP-2020',97,14,2,'W');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1007,'20-SEP-2020','25-SEP-2020',100,5,3,'W');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1008,'1-OCT-2020','3-OCT-2020',85,5,3,'W');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1009,'1-OCT-2020','4-OCT-2020',28,5,3,'W');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES(1010,'1-OCT-2020','9-OCT-2020',23,28,4,'W');
+
+1 row created.
+
+SQL>
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1001,224,120);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1001,225,125);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1002,305,149);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1003,409,99);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1004,320,110);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1004,409,105);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1004,321,112);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1005,302,139);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1006,502,119);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1006,302,119);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1007,320,89);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1007,321,89);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1009,502,129);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1009,409,129);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1010,225,109);
+
+1 row created.
+
+SQL>
+SQL> COMMIT;
+
+Commit complete.
+
+SQL>
+SQL> --Part IIB
+SQL>
+SQL> SELECT * FROM CUSTTYPE_jmc ;
+
+CUSTTYPE        CUSTDESC
+--------------- --------------------
+C               Corporate
+I               Indivdual
+
+SQL>
+SQL> SELECT * FROM RATETYPE_jmc ;
+
+RATETYPE        RATEDESC
+--------------- --------------------
+C               Corporate
+S               Standard
+W               Weekend
+
+SQL>
+SQL> SELECT * FROM AGENTTYPE_jmc ;
+
+AGENTTYPE       AGENTDESC
+--------------- --------------------
+FD              Front Desk
+T               Telephone
+RC              Online Res Center
+
+SQL>
+SQL> SELECT * FROM ROOMTYPE_jmc ;
+
+ROOMTYPE        ROOMDESC
+--------------- --------------------
+K               King Bed
+D               2 Double Bed
+KS              King Suite
+
+SQL>
+SQL> SELECT * FROM ROOM_jmc ;
+
+   ROOMNUM ROOMTYPE
+---------- ---------------
+       224 K
+       225 D
+       305 D
+       320 D
+       321 K
+       302 K
+       501 KS
+       502 KS
+       409 D
+
+9 rows selected.
+
+SQL>
+SQL> SELECT * FROM AGENT_jmc ;
+
+   AGENTID AGENTFNAME           AGENTLNAME           AGENTTYPE
+---------- -------------------- -------------------- ---------------
+        20 Megan                Smith                FD
+         5 Janice               May                  T
+        14 John                 King                 RC
+        28 Ray                  Schultz              T
+
+SQL>
+SQL> SELECT * FROM CUSTOMER_jmc ;
+
+    CUSTID CUSTFNAME            CUSTLNAME            CUSTPHONE  CUSTTYPE         LOYALTYID
+---------- -------------------- -------------------- ---------- --------------- ----------
+        85 Wesley               Tanner               8175551193 C                      323
+       100 Breanna              Rhodes               2145559191 I                      129
+        15 Jeff                 Miner                           I
+        77 Kim                  Jackson              8175554911 C                      210
+       119 Mary                 Vaughn               8175552334 I                      118
+        97 Chris                Mancha               4695553440 I                      153
+        28 Renee                Walker               2145559285 I                      135
+        23 Shelby               Day                             I
+
+8 rows selected.
+
+SQL>
+SQL> SELECT * FROM RESERVATION_jmc ;
+
+    RESNUM CHECKIN   CHECKOUT      CUSTID    AGENTID GUESTCOUNT RATETYPE
+---------- --------- --------- ---------- ---------- ---------- ---------------
+      1001 05-SEP-20 07-SEP-20         85         20          2 C
+      1002 01-SEP-20 10-SEP-20        100          5          4 S
+      1003 09-SEP-20 11-SEP-20         15         14          3 W
+      1004 12-SEP-20 14-SEP-20         77         28          4 C
+      1005 15-SEP-20 18-SEP-20        119         20          1 S
+      1006 24-SEP-20 26-SEP-20         97         14          2 W
+      1007 20-SEP-20 25-SEP-20        100          5          3 W
+      1008 01-OCT-20 03-OCT-20         85          5          3 W
+      1009 01-OCT-20 04-OCT-20         28          5          3 W
+      1010 01-OCT-20 09-OCT-20         23         28          4 W
+
+10 rows selected.
+
+SQL>
+SQL> SELECT * FROM RESDETAIL_jmc ;
+
+    RESNUM    ROOMNUM    RATEAMT
+---------- ---------- ----------
+      1001        224        120
+      1001        225        125
+      1002        305        149
+      1003        409         99
+      1004        320        110
+      1004        409        105
+      1004        321        112
+      1005        302        139
+      1006        502        119
+      1006        302        119
+      1007        320         89
+      1007        321         89
+      1009        502        129
+      1009        409        129
+      1010        225        109
+
+15 rows selected.
+
+SQL>
+SQL> --Part III
+SQL>
+SQL> UPDATE CUSTOMER_jmc
+  2  SET CustPhone = '2145551234'
+  3  WHERE CustID = '100';
+
+1 row updated.
+
+SQL>
+SQL> INSERT INTO ROOMTYPE_jmc
+  2  VALUES('DS','Double Suite');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(226,'KS');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(227,'D');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(410,'DS');
+
+1 row created.
+
+SQL>
+SQL> UPDATE RESERVATION_jmc
+  2  SET CheckIn = '9-OCT-2020'
+  3  SET CheckOut = '12-OCT-2020';
+SET CheckOut = '12-OCT-2020'
+*
+ERROR at line 3:
+ORA-00933: SQL command not properly ended
+
+
+SQL> WHERE ResNum = 1010
+SP2-0734: unknown command beginning "WHERE ResN..." - rest of line ignored.
+SQL>
+SQL> INSERT INTO RESERVATION_jmc
+  2  VALUES (1011,'3-OCT-2020','6-OCT-2020',120,5,3,'S');
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1011,226,159);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1011,227,149);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1003,410,129);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO CUSTOMER_jmc
+  2  VALUES(120,'Amanda','Green',NULL,'I',NULL);
+
+1 row created.
+
+SQL>
+SQL> UPDATE RESDETAIL_jmc
+  2  SET RateAmt = 129
+  3  WHERE ResNum = 1005;
+
+1 row updated.
+
+SQL>
+SQL>
+SQL>
+SQL>
+SQL> SELECT * FROM CUSTTYPE_jmc
+  2  ORDER BY CustType;
+
+CUSTTYPE        CUSTDESC
+--------------- --------------------
+C               Corporate
+I               Indivdual
+
+SQL>
+SQL> SELECT * FROM RATETYPE_jmc
+  2  ORDER BY RateType;
+
+RATETYPE        RATEDESC
+--------------- --------------------
+C               Corporate
+S               Standard
+W               Weekend
+
+SQL>
+SQL> SELECT * FROM AGENTTYPE_jmc
+  2  ORDER BY AgentType;
+
+AGENTTYPE       AGENTDESC
+--------------- --------------------
+FD              Front Desk
+RC              Online Res Center
+T               Telephone
+
+SQL>
+SQL> SELECT * FROM ROOMTYPE_jmc
+  2  ORDER BY RoomType;
+
+ROOMTYPE        ROOMDESC
+--------------- --------------------
+D               2 Double Bed
+DS              Double Suite
+K               King Bed
+KS              King Suite
+
+SQL>
+SQL> SELECT * FROM ROOM_jmc
+  2  ORDER BY RoomNum;
+
+   ROOMNUM ROOMTYPE
+---------- ---------------
+       224 K
+       225 D
+       226 KS
+       227 D
+       302 K
+       305 D
+       320 D
+       321 K
+       409 D
+       410 DS
+       501 KS
+       502 KS
+
+12 rows selected.
+
+SQL>
+SQL> SELECT * FROM AGENT_jmc
+  2  ORDER BY AgentID;
+
+   AGENTID AGENTFNAME           AGENTLNAME           AGENTTYPE
+---------- -------------------- -------------------- ---------------
+         5 Janice               May                  T
+        14 John                 King                 RC
+        20 Megan                Smith                FD
+        28 Ray                  Schultz              T
+
+SQL>
+SQL> SELECT * FROM CUSTOMER_jmc
+  2  ORDER BY CustID;
+
+    CUSTID CUSTFNAME            CUSTLNAME            CUSTPHONE  CUSTTYPE         LOYALTYID
+---------- -------------------- -------------------- ---------- --------------- ----------
+        15 Jeff                 Miner                           I
+        23 Shelby               Day                             I
+        28 Renee                Walker               2145559285 I                      135
+        77 Kim                  Jackson              8175554911 C                      210
+        85 Wesley               Tanner               8175551193 C                      323
+        97 Chris                Mancha               4695553440 I                      153
+       100 Breanna              Rhodes               2145551234 I                      129
+       119 Mary                 Vaughn               8175552334 I                      118
+       120 Amanda               Green                           I
+
+9 rows selected.
+
+SQL>
+SQL> SELECT * FROM RESERVATION_jmc
+  2  ORDER BY ResNum;
+
+    RESNUM CHECKIN   CHECKOUT      CUSTID    AGENTID GUESTCOUNT RATETYPE
+---------- --------- --------- ---------- ---------- ---------- ---------------
+      1001 05-SEP-20 07-SEP-20         85         20          2 C
+      1002 01-SEP-20 10-SEP-20        100          5          4 S
+      1003 09-SEP-20 11-SEP-20         15         14          3 W
+      1004 12-SEP-20 14-SEP-20         77         28          4 C
+      1005 15-SEP-20 18-SEP-20        119         20          1 S
+      1006 24-SEP-20 26-SEP-20         97         14          2 W
+      1007 20-SEP-20 25-SEP-20        100          5          3 W
+      1008 01-OCT-20 03-OCT-20         85          5          3 W
+      1009 01-OCT-20 04-OCT-20         28          5          3 W
+      1010 01-OCT-20 09-OCT-20         23         28          4 W
+      1011 03-OCT-20 06-OCT-20        120          5          3 S
+
+11 rows selected.
+
+SQL>
+SQL> SELECT * FROM RESDETAIL_jmc
+  2  ORDER BY ResNum,RoomNum;
+
+    RESNUM    ROOMNUM    RATEAMT
+---------- ---------- ----------
+      1001        224        120
+      1001        225        125
+      1002        305        149
+      1003        409         99
+      1003        410        129
+      1004        320        110
+      1004        321        112
+      1004        409        105
+      1005        302        129
+      1006        302        119
+      1006        502        119
+      1007        320         89
+      1007        321         89
+      1009        409        129
+      1009        502        129
+      1010        225        109
+      1011        226        159
+      1011        227        149
+
+18 rows selected.
+
+SQL>
+SQL> --Part I for Project 3--
+SQL> UPDATE RESDETAIL_jmc
+  2  SET RoomNum = 321
+  3  WHERE RateAmt = 109;
+
+1 row updated.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> UPDATE RESERVATION_jmc
+  2  SET RateType = 'C'
+  3  WHERE ResNum = 1010;
+
+1 row updated.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> UPDATE RESERVATION_jmc
+  2  SET CheckOut =     '8-SEP-2020'
+  3  WHERE ResNum = 1001;
+
+1 row updated.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part II for Project 3--
+SQL> UPDATE CUSTOMER_jmc
+  2  SET CustPhone = '2145551000'
+  3  WHERE CustID = 120;
+
+1 row updated.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> UPDATE CUSTOMER_jmc
+  2  SET LoyaltyID = 403
+  3  WHERE CustID =120;
+
+1 row updated.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part III for Project 3--
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(301,'D');
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(303,'DS');
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> INSERT INTO ROOM_jmc
+  2  VALUES(304,'KS');
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part IV for Project 3--
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1005,303,139);
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> INSERT INTO RESDETAIL_jmc
+  2  VALUES(1005,304,149);
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part V for Project 3--
+SQL> INSERT INTO Customer_jmc
+  2  VALUES ((select max (CustID) from Customer_jmc) +1, 'Susan', 'White', '2145552020','C',NULL) ;
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL>
+SQL> --Part VI for Project 3--
+SQL>
+SQL> --COMMIT all changes.
+SQL>
+SQL> --Part VII for Project 3--
+SQL> SELECT CUSTID,CUSTFNAME,CUSTLNAME
+  2  FROM CUSTOMER_jmc
+  3  WHERE CUSTPHONE IS NULL;
+
+    CUSTID CUSTFNAME            CUSTLNAME
+---------- -------------------- --------------------
+        15 Jeff                 Miner
+        23 Shelby               Day
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part VIII for Project 3--
+SQL> select avg (RateAmt) as "AvgRate"
+  2  FROM RESDETAIL_jmc
+  3  COMMIT;
+
+   AvgRate
+----------
+    122.85
+
+SQL> --Part IX for Project 3--
+SQL> select distinct count(RoomNum)as "RoomResCount"
+  2  FROM RESDETAIL_jmc
+  3  COMMIT;
+
+RoomResCount
+------------
+          20
+
+SQL> --Part X for Project 3--
+SQL> select RoomType as "RoomType",count(RoomNum) as "RoomNum"
+  2  FROM ROOM_jmc
+  3  GROUP BY ROOMTYPE;
+
+RoomType           RoomNum
+--------------- ----------
+D                        6
+DS                       2
+KS                       4
+K                        3
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XI for Project 3--
+SQL>
+SQL> SELECT RD.ResNum AS "ResNum",
+  2          CheckIn AS "CheckIn",CheckOut AS "Checkout",COUNT (RoomNum) AS "RoomCount"
+  3  FROM Reservation_jmc R,ResDetail_jmc RD
+  4  WHERE R.ResNum = RD.ResNum
+  5  GROUP BY RD.ResNum,CheckIn,CheckOut;
+
+    ResNum CheckIn   Checkout   RoomCount
+---------- --------- --------- ----------
+      1002 01-SEP-20 10-SEP-20          1
+      1003 09-SEP-20 11-SEP-20          2
+      1007 20-SEP-20 25-SEP-20          2
+      1001 05-SEP-20 08-SEP-20          2
+      1011 03-OCT-20 06-OCT-20          2
+      1006 24-SEP-20 26-SEP-20          2
+      1004 12-SEP-20 14-SEP-20          3
+      1005 15-SEP-20 18-SEP-20          3
+      1009 01-OCT-20 04-OCT-20          2
+      1010 01-OCT-20 09-OCT-20          1
+
+10 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XII for Project 3--
+SQL> SELECT R.CUSTID AS "CustomerID",
+  2  (C.CustFName|| ' '||C.CustLName) AS "CustomerName",
+  3  COUNT(R.ResNum) AS "ResCount"
+  4  FROM Reservation_jmc R ,Customer_jmc C
+  5  WHERE R.CustID = C.CustID
+  6  GROUP BY R.CustID,C.CustFName,C.CustLName
+  7  ORDER BY COUNT(R.ResNum) DESC,r.CustID ASC;
+
+CustomerID CustomerName                                ResCount
+---------- ----------------------------------------- ----------
+        85 Wesley Tanner                                      2
+       100 Breanna Rhodes                                     2
+        15 Jeff Miner                                         1
+        23 Shelby Day                                         1
+        28 Renee Walker                                       1
+        77 Kim Jackson                                        1
+        97 Chris Mancha                                       1
+       119 Mary Vaughn                                        1
+       120 Amanda Green                                       1
+
+9 rows selected.
+
+SQL> --Part XIII for Project 3--
+SQL>  SELECT ResNum AS "ResNum" ,RoomNum AS "RoomNum",RateAmt AS "RateAmt"
+  2   FROM ResDetail_jmc
+  3   ORDER BY ResNum ASC,RoomNum ASC;
+
+    ResNum    RoomNum    RateAmt
+---------- ---------- ----------
+      1001        224        120
+      1001        225        125
+      1002        305        149
+      1003        409         99
+      1003        410        129
+      1004        320        110
+      1004        321        112
+      1004        409        105
+      1005        302        129
+      1005        303        139
+      1005        304        149
+      1006        302        119
+      1006        502        119
+      1007        320         89
+      1007        321         89
+      1009        409        129
+      1009        502        129
+      1010        321        109
+      1011        226        159
+      1011        227        149
+
+20 rows selected.
+
+SQL>  COMMIT;
+
+Commit complete.
+
+SQL>  --Part XIV for Project 3--
+SQL> SELECT R.RateType AS "RateType",RateDesc AS "Description",
+  2  COUNT(GuestCount) AS "ResCount"
+  3  FROM Reservation_jmc R ,RateType_jmc RT
+  4  WHERE R.RateType = RT.RateType
+  5  GROUP BY R.RateType,RateDesc
+  6  ORDER BY COUNT(GuestCount) DESC;
+
+RateType        Description            ResCount
+--------------- -------------------- ----------
+W               Weekend                       5
+C               Corporate                     3
+S               Standard                      3
+
+SQL> --Part XV of Project 3--
+SQL> SELECT CustID AS "Customer_ID",CustFName AS "First_Name",CustLName AS "Last_Name",
+  2  '(',(SUBSTR(CustPhone,1,3) ||')'||SUBSTR(CustPhone,4,3) ||'-'|| SUBSTR(CustPhone,7,4))
+  3  AS "Phone"
+  4  FROM Customer_jmc
+  5  ORDER BY CustID;
+
+Customer_ID First_Name           Last_Name            ' Phone
+----------- -------------------- -------------------- - ------------------------------------------
+         15 Jeff                 Miner                ( )-
+         23 Shelby               Day                  ( )-
+         28 Renee                Walker               ( 214)555-9285
+         77 Kim                  Jackson              ( 817)555-4911
+         85 Wesley               Tanner               ( 817)555-1193
+         97 Chris                Mancha               ( 469)555-3440
+        100 Breanna              Rhodes               ( 214)555-1234
+        119 Mary                 Vaughn               ( 817)555-2334
+        120 Amanda               Green                ( 214)555-1000
+        121 Susan                White                ( 214)555-2020
+
+10 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XVI of Project 3--
+SQL> SELECT ResNum AS "ResNum",RD.RoomNum AS "RmNum",
+  2  RM.RoomType AS "RmType",RoomDesc AS "RmDesc",
+  3  RT.RateType AS "RateType",RateDesc AS "RateDesc",
+  4  TO_CHAR (RateAmt,'$999.99') AS "RateAmt"
+  5  FROM ResDetail_jmc RD,ROOM_jmc RM,
+  6  RoomType_jmc RMT,RateType_jmc RT
+  7  WHERE RD.RoomNum = RM.RoomNum AND
+  8  RM.RoomType = RMT.RoomType AND
+  9  RT.RateType = RT.RateType AND
+ 10  (ResNum,RateAmt) IN
+ 11  (SELECT ResNum,MIN(RateAmt)
+ 12  From ResDetail_jmc RD
+ 13  GROUP BY ResNum)
+ 14  ORDER BY RateAmt DESC;
+
+    ResNum      RmNum Rm RmDesc               RateType        RateDesc             RateAmt
+---------- ---------- -- -------------------- --------------- -------------------- --------
+      1002        305 D  2 Double Bed         C               Corporate             $149.00
+      1002        305 D  2 Double Bed         S               Standard              $149.00
+      1002        305 D  2 Double Bed         W               Weekend               $149.00
+      1011        227 D  2 Double Bed         W               Weekend               $149.00
+      1011        227 D  2 Double Bed         S               Standard              $149.00
+      1011        227 D  2 Double Bed         C               Corporate             $149.00
+      1005        302 K  King Bed             W               Weekend               $129.00
+      1009        502 KS King Suite           W               Weekend               $129.00
+      1005        302 K  King Bed             C               Corporate             $129.00
+      1005        302 K  King Bed             S               Standard              $129.00
+      1009        502 KS King Suite           S               Standard              $129.00
+      1009        502 KS King Suite           C               Corporate             $129.00
+      1009        409 D  2 Double Bed         W               Weekend               $129.00
+      1009        409 D  2 Double Bed         S               Standard              $129.00
+      1009        409 D  2 Double Bed         C               Corporate             $129.00
+      1001        224 K  King Bed             C               Corporate             $120.00
+      1001        224 K  King Bed             S               Standard              $120.00
+      1001        224 K  King Bed             W               Weekend               $120.00
+      1006        502 KS King Suite           S               Standard              $119.00
+      1006        502 KS King Suite           C               Corporate             $119.00
+      1006        502 KS King Suite           W               Weekend               $119.00
+      1006        302 K  King Bed             S               Standard              $119.00
+      1006        302 K  King Bed             C               Corporate             $119.00
+      1006        302 K  King Bed             W               Weekend               $119.00
+      1010        321 K  King Bed             S               Standard              $109.00
+      1010        321 K  King Bed             W               Weekend               $109.00
+      1010        321 K  King Bed             C               Corporate             $109.00
+      1004        409 D  2 Double Bed         S               Standard              $105.00
+      1004        409 D  2 Double Bed         C               Corporate             $105.00
+      1004        409 D  2 Double Bed         W               Weekend               $105.00
+      1003        409 D  2 Double Bed         S               Standard               $99.00
+      1003        409 D  2 Double Bed         C               Corporate              $99.00
+      1003        409 D  2 Double Bed         W               Weekend                $99.00
+      1007        320 D  2 Double Bed         S               Standard               $89.00
+      1007        320 D  2 Double Bed         C               Corporate              $89.00
+      1007        320 D  2 Double Bed         W               Weekend                $89.00
+      1007        321 K  King Bed             W               Weekend                $89.00
+      1007        321 K  King Bed             S               Standard               $89.00
+      1007        321 K  King Bed             C               Corporate              $89.00
+
+39 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XVII for Project 3--
+SQL> SELECT CT.CustType AS "CustType",CustDesc AS "Description" ,
+  2  COUNT (CustID) AS "Count"
+  3  FROM CustType_jmc CT,Customer_jmc C
+  4  WHERE CT.CustType =C.CustType
+  5  GROUP BY CT.CustType,CustDesc
+  6  ORDER BY COUNT (CustID)DESC;
+
+CustType        Description               Count
+--------------- -------------------- ----------
+I               Indivdual                     7
+C               Corporate                     3
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XIX for Project 3--
+SQL> SELECT RD.ResNum AS "ResNum",RD.RoomNum,RM.RoomType,RMD.RoomDesc,
+  2  TO_CHAR(RateAmt,'$999.99' ) AS "RateAmt"
+  3  FROM ResDetail_jmc RD,Reservation_jmc R,Room_jmc RM, RoomType_jmc RMD
+  4  WHERE RD.ResNum = R.ResNum AND
+  5  RM.RoomType = RMD.RoomType AND
+  6  RD.RateAmt <= '119.00'
+  7  ORDER BY RD.RateAmt DESC,RD.ResNum ASC;
+
+    ResNum    ROOMNUM ROOMTYPE        ROOMDESC             RateAmt
+---------- ---------- --------------- -------------------- --------
+      1006        302 K               King Bed              $119.00
+      1006        502 K               King Bed              $119.00
+      1006        502 KS              King Suite            $119.00
+      1006        302 KS              King Suite            $119.00
+      1006        502 DS              Double Suite          $119.00
+      1006        302 DS              Double Suite          $119.00
+      1006        502 D               2 Double Bed          $119.00
+      1006        302 D               2 Double Bed          $119.00
+      1006        502 DS              Double Suite          $119.00
+      1006        302 DS              Double Suite          $119.00
+      1006        502 D               2 Double Bed          $119.00
+      1006        302 D               2 Double Bed          $119.00
+      1006        502 KS              King Suite            $119.00
+      1006        302 KS              King Suite            $119.00
+      1006        502 D               2 Double Bed          $119.00
+      1006        302 D               2 Double Bed          $119.00
+      1006        502 KS              King Suite            $119.00
+      1006        302 KS              King Suite            $119.00
+      1006        502 KS              King Suite            $119.00
+      1006        302 KS              King Suite            $119.00
+      1006        502 K               King Bed              $119.00
+      1006        302 K               King Bed              $119.00
+      1006        502 K               King Bed              $119.00
+      1006        302 K               King Bed              $119.00
+      1006        502 D               2 Double Bed          $119.00
+      1006        302 D               2 Double Bed          $119.00
+      1006        502 D               2 Double Bed          $119.00
+      1006        302 D               2 Double Bed          $119.00
+      1006        502 D               2 Double Bed          $119.00
+      1006        302 D               2 Double Bed          $119.00
+      1004        321 KS              King Suite            $112.00
+      1004        321 KS              King Suite            $112.00
+      1004        321 K               King Bed              $112.00
+      1004        321 D               2 Double Bed          $112.00
+      1004        321 DS              Double Suite          $112.00
+      1004        321 D               2 Double Bed          $112.00
+      1004        321 D               2 Double Bed          $112.00
+      1004        321 D               2 Double Bed          $112.00
+      1004        321 KS              King Suite            $112.00
+      1004        321 K               King Bed              $112.00
+      1004        321 DS              Double Suite          $112.00
+      1004        321 K               King Bed              $112.00
+      1004        321 D               2 Double Bed          $112.00
+      1004        321 D               2 Double Bed          $112.00
+      1004        321 KS              King Suite            $112.00
+      1004        320 D               2 Double Bed          $110.00
+      1004        320 D               2 Double Bed          $110.00
+
+    ResNum    ROOMNUM ROOMTYPE        ROOMDESC             RateAmt
+---------- ---------- --------------- -------------------- --------
+      1004        320 KS              King Suite            $110.00
+      1004        320 DS              Double Suite          $110.00
+      1004        320 K               King Bed              $110.00
+      1004        320 KS              King Suite            $110.00
+      1004        320 K               King Bed              $110.00
+      1004        320 D               2 Double Bed          $110.00
+      1004        320 K               King Bed              $110.00
+      1004        320 D               2 Double Bed          $110.00
+      1004        320 DS              Double Suite          $110.00
+      1004        320 D               2 Double Bed          $110.00
+      1004        320 KS              King Suite            $110.00
+      1004        320 D               2 Double Bed          $110.00
+      1004        320 KS              King Suite            $110.00
+      1010        321 K               King Bed              $109.00
+      1010        321 D               2 Double Bed          $109.00
+      1010        321 D               2 Double Bed          $109.00
+      1010        321 D               2 Double Bed          $109.00
+      1010        321 K               King Bed              $109.00
+      1010        321 K               King Bed              $109.00
+      1010        321 KS              King Suite            $109.00
+      1010        321 KS              King Suite            $109.00
+      1010        321 D               2 Double Bed          $109.00
+      1010        321 KS              King Suite            $109.00
+      1010        321 D               2 Double Bed          $109.00
+      1010        321 DS              Double Suite          $109.00
+      1010        321 D               2 Double Bed          $109.00
+      1010        321 DS              Double Suite          $109.00
+      1010        321 KS              King Suite            $109.00
+      1004        409 KS              King Suite            $105.00
+      1004        409 D               2 Double Bed          $105.00
+      1004        409 D               2 Double Bed          $105.00
+      1004        409 KS              King Suite            $105.00
+      1004        409 D               2 Double Bed          $105.00
+      1004        409 K               King Bed              $105.00
+      1004        409 KS              King Suite            $105.00
+      1004        409 D               2 Double Bed          $105.00
+      1004        409 D               2 Double Bed          $105.00
+      1004        409 K               King Bed              $105.00
+      1004        409 DS              Double Suite          $105.00
+      1004        409 D               2 Double Bed          $105.00
+      1004        409 K               King Bed              $105.00
+      1004        409 KS              King Suite            $105.00
+      1004        409 DS              Double Suite          $105.00
+      1003        409 D               2 Double Bed           $99.00
+      1003        409 KS              King Suite             $99.00
+      1003        409 D               2 Double Bed           $99.00
+      1003        409 K               King Bed               $99.00
+
+    ResNum    ROOMNUM ROOMTYPE        ROOMDESC             RateAmt
+---------- ---------- --------------- -------------------- --------
+      1003        409 D               2 Double Bed           $99.00
+      1003        409 DS              Double Suite           $99.00
+      1003        409 K               King Bed               $99.00
+      1003        409 D               2 Double Bed           $99.00
+      1003        409 D               2 Double Bed           $99.00
+      1003        409 D               2 Double Bed           $99.00
+      1003        409 KS              King Suite             $99.00
+      1003        409 K               King Bed               $99.00
+      1003        409 KS              King Suite             $99.00
+      1003        409 DS              Double Suite           $99.00
+      1003        409 KS              King Suite             $99.00
+      1007        320 KS              King Suite             $89.00
+      1007        321 KS              King Suite             $89.00
+      1007        320 DS              Double Suite           $89.00
+      1007        321 DS              Double Suite           $89.00
+      1007        320 D               2 Double Bed           $89.00
+      1007        321 D               2 Double Bed           $89.00
+      1007        320 DS              Double Suite           $89.00
+      1007        321 DS              Double Suite           $89.00
+      1007        320 D               2 Double Bed           $89.00
+      1007        321 D               2 Double Bed           $89.00
+      1007        320 KS              King Suite             $89.00
+      1007        321 KS              King Suite             $89.00
+      1007        320 D               2 Double Bed           $89.00
+      1007        321 D               2 Double Bed           $89.00
+      1007        320 KS              King Suite             $89.00
+      1007        321 KS              King Suite             $89.00
+      1007        320 KS              King Suite             $89.00
+      1007        321 KS              King Suite             $89.00
+      1007        320 K               King Bed               $89.00
+      1007        321 K               King Bed               $89.00
+      1007        320 K               King Bed               $89.00
+      1007        321 K               King Bed               $89.00
+      1007        320 D               2 Double Bed           $89.00
+      1007        321 D               2 Double Bed           $89.00
+      1007        320 D               2 Double Bed           $89.00
+      1007        321 D               2 Double Bed           $89.00
+      1007        320 D               2 Double Bed           $89.00
+      1007        321 D               2 Double Bed           $89.00
+      1007        321 K               King Bed               $89.00
+      1007        320 K               King Bed               $89.00
+
+135 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XX for Project 3--
+SQL> SELECT RD.ResNum AS "ResID",TO_CHAR(R.CheckIn, 'mm-dd-yy') AS "CheckInDate",
+  2          TO_CHAR(R.CheckOut,'mm-dd-yy') AS "CheckOutDate",
+  3          R.CustID,CustFName,CustLName,COUNT(RoomNum)
+  4  FROM ResDetail_jmc RD,Customer_jmc C,Reservation_jmc R
+  5  WHERE RD.ResNum = R.ResNum AND
+  6  R.CustID = C.CustID
+  7  GROUP BY RD.ResNum,CheckIn,CheckOut,R.CustID,CustFName,CustLName
+  8  ORDER BY RD.ResNum;
+
+     ResID CheckInD CheckOut     CUSTID CUSTFNAME            CUSTLNAME            COUNT(ROOMNUM)
+---------- -------- -------- ---------- -------------------- -------------------- --------------
+      1001 09-05-20 09-08-20         85 Wesley               Tanner                            2
+      1002 09-01-20 09-10-20        100 Breanna              Rhodes                            1
+      1003 09-09-20 09-11-20         15 Jeff                 Miner                             2
+      1004 09-12-20 09-14-20         77 Kim                  Jackson                           3
+      1005 09-15-20 09-18-20        119 Mary                 Vaughn                            3
+      1006 09-24-20 09-26-20         97 Chris                Mancha                            2
+      1007 09-20-20 09-25-20        100 Breanna              Rhodes                            2
+      1009 10-01-20 10-04-20         28 Renee                Walker                            2
+      1010 10-01-20 10-09-20         23 Shelby               Day                               1
+      1011 10-03-20 10-06-20        120 Amanda               Green                             2
+
+10 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --XXI for Project 3--
+SQL> SELECT RD.ResNum AS "ResNum",RD.RoomNum AS "RmNum",
+  2  RM.RoomType AS "RMType",RT.RateType AS "RateType",
+  3  TO_CHAR (RateAmt ,'$999.99') AS "RateAmt"
+  4  FROM ResDetail_jmc RD,Room_jmc RM,RoomType_jmc RMT,
+  5  RateType_jmc RT
+  6  WHERE RD.RoomNum = RM.RoomNum AND
+  7  RM.RoomType = RMT.RoomType AND
+  8  RT.RateType = RT.RateType And
+  9  ResNum = '1005 ' AND
+ 10  (ResNum,RateAmt)IN
+ 11  (SELECT ResNum,MAX(RateAmt)
+ 12  FROM ResDetail_jmc
+ 13  GROUP BY ResNum);
+
+    ResNum      RmNum RM RateType        RateAmt
+---------- ---------- -- --------------- --------
+      1005        304 KS C                $149.00
+      1005        304 KS S                $149.00
+      1005        304 KS W                $149.00
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXII for Project 3--
+SQL> SELECT AG.AgentType AS "AgentType", AgentDesc AS "Desc",
+  2  COUNT(AgentID)
+  3  From Agent_jmc AG,AgentType_jmc AGT
+  4  WHERE AG.AgentType = AGT.AgentType
+  5  GROUP BY AG.AgentType,AgentDesc
+  6  Order BY COUNT (AgentID);
+
+AgentType       Desc                 COUNT(AGENTID)
+--------------- -------------------- --------------
+RC              Online Res Center                 1
+FD              Front Desk                        1
+T               Telephone                         2
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXIII for Project 3--
+SQL> Select ResNum AS "ResNum",RD.RoomNum AS "RoomNum",RoomDesc AS "RoomTypeDesc",RateDesc AS "RateTypeDesc",RateAmt
+  2  FROM ResDetail_jmc RD,Room_jmc RM,
+  3  RoomType_jmc RMT,RateType_jmc RT
+  4  WHERE RD.RoomNum = RM.RoomNum AND
+  5  RM.RoomType = RMT.RoomType AND
+  6  RT.RateType = RT.RateType AND
+  7  RateAmt >
+  8  (SELECT AVG(RateAmt)
+  9  FROM ResDetail_jmc)
+ 10  ORDER BY RD.RoomNum;
+
+    ResNum    RoomNum RoomTypeDesc         RateTypeDesc            RATEAMT
+---------- ---------- -------------------- -------------------- ----------
+      1001        225 2 Double Bed         Corporate                   125
+      1001        225 2 Double Bed         Standard                    125
+      1001        225 2 Double Bed         Weekend                     125
+      1011        226 King Suite           Standard                    159
+      1011        226 King Suite           Corporate                   159
+      1011        226 King Suite           Weekend                     159
+      1011        227 2 Double Bed         Standard                    149
+      1011        227 2 Double Bed         Corporate                   149
+      1011        227 2 Double Bed         Weekend                     149
+      1005        302 King Bed             Weekend                     129
+      1005        302 King Bed             Standard                    129
+      1005        302 King Bed             Corporate                   129
+      1005        303 Double Suite         Corporate                   139
+      1005        303 Double Suite         Weekend                     139
+      1005        303 Double Suite         Standard                    139
+      1005        304 King Suite           Standard                    149
+      1005        304 King Suite           Weekend                     149
+      1005        304 King Suite           Corporate                   149
+      1002        305 2 Double Bed         Standard                    149
+      1002        305 2 Double Bed         Weekend                     149
+      1002        305 2 Double Bed         Corporate                   149
+      1009        409 2 Double Bed         Standard                    129
+      1009        409 2 Double Bed         Corporate                   129
+      1009        409 2 Double Bed         Weekend                     129
+      1003        410 Double Suite         Standard                    129
+      1003        410 Double Suite         Corporate                   129
+      1003        410 Double Suite         Weekend                     129
+      1009        502 King Suite           Standard                    129
+      1009        502 King Suite           Weekend                     129
+      1009        502 King Suite           Corporate                   129
+
+30 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXIV for Project 3--
+SQL> SELECT RD.RoomNum AS "RmNum",RoomDesc AS "RmType",
+  2  RateDesc AS "RateType",RateAmt AS "RateAmt"
+  3  FROM ResDetail_jmc RD,Room_jmc RM,
+  4  RoomType_jmc RMT,RateType_jmc RT
+  5  WHERE RD.RoomNum =RM.RoomNum AND
+  6  RM.RoomType = RMT.RoomType AND
+  7  RT.RateType = RT.RateType AND
+  8  RateAmt > '115'
+  9  GROUP BY RD.RoomNum,RoomDesc,RateDesc,RateAmt
+ 10  ORDER BY RateAmt DESC;
+
+     RmNum RmType               RateType           RateAmt
+---------- -------------------- --------------- ----------
+       226 King Suite           Corporate              159
+       226 King Suite           Standard               159
+       226 King Suite           Weekend                159
+       227 2 Double Bed         Corporate              149
+       305 2 Double Bed         Corporate              149
+       227 2 Double Bed         Standard               149
+       305 2 Double Bed         Standard               149
+       227 2 Double Bed         Weekend                149
+       305 2 Double Bed         Weekend                149
+       304 King Suite           Corporate              149
+       304 King Suite           Standard               149
+       304 King Suite           Weekend                149
+       303 Double Suite         Corporate              139
+       303 Double Suite         Standard               139
+       303 Double Suite         Weekend                139
+       409 2 Double Bed         Corporate              129
+       409 2 Double Bed         Standard               129
+       409 2 Double Bed         Weekend                129
+       410 Double Suite         Corporate              129
+       410 Double Suite         Standard               129
+       410 Double Suite         Weekend                129
+       302 King Bed             Corporate              129
+       302 King Bed             Standard               129
+       302 King Bed             Weekend                129
+       502 King Suite           Corporate              129
+       502 King Suite           Standard               129
+       502 King Suite           Weekend                129
+       225 2 Double Bed         Corporate              125
+       225 2 Double Bed         Standard               125
+       225 2 Double Bed         Weekend                125
+       224 King Bed             Corporate              120
+       224 King Bed             Standard               120
+       224 King Bed             Weekend                120
+       302 King Bed             Corporate              119
+       302 King Bed             Standard               119
+       302 King Bed             Weekend                119
+       502 King Suite           Corporate              119
+       502 King Suite           Standard               119
+       502 King Suite           Weekend                119
+
+39 rows selected.
+
+SQL> --Part XXV for Project 3--
+SQL> SELECT RD.RoomNum,RoomType,Count (ResNum)
+  2  FROM ResDetail_jmc RD,Room_jmc RM
+  3  WHERE RD.RoomNum = RM.RoomNum
+  4  GROUP BY RD.RoomNum,RoomType
+  5  Order BY COUNT (ResNum);
+
+   ROOMNUM ROOMTYPE        COUNT(RESNUM)
+---------- --------------- -------------
+       225 D                           1
+       303 DS                          1
+       227 D                           1
+       410 DS                          1
+       224 K                           1
+       304 KS                          1
+       305 D                           1
+       226 KS                          1
+       302 K                           2
+       320 D                           2
+       502 KS                          2
+       409 D                           3
+       321 K                           3
+
+13 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXVI for Project 3--
+SQL> SELECT CustID AS "CustID",CustFName AS "FirstName",CustLName AS "Last_Name",
+  2  '(',(SUBSTR(CustPhone,1,3)||')'||SUBSTR(CustPhone,4,3) ||'-'|| SUBSTR(CustPhone,7,4))
+  3  AS "Phone"
+  4  FROM Customer_jmc
+  5  WHERE LoyaltyID IS NOT NULL;
+
+    CustID FirstName            Last_Name            ' Phone
+---------- -------------------- -------------------- - ------------------------------------------
+        85 Wesley               Tanner               ( 817)555-1193
+       100 Breanna              Rhodes               ( 214)555-1234
+        77 Kim                  Jackson              ( 817)555-4911
+       119 Mary                 Vaughn               ( 817)555-2334
+        97 Chris                Mancha               ( 469)555-3440
+        28 Renee                Walker               ( 214)555-9285
+       120 Amanda               Green                ( 214)555-1000
+
+7 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXVII for Project 3--
+SQL> SELECT RD.RoomNum AS "Room",RoomDesc AS "RoomType",
+  2  RateDesc AS "RateType",
+  3  TO_CHAR(RateAmt,'$999.99') AS "Amt"
+  4  FROM ResDetail_jmc RD,Room_jmc RM,
+  5  RoomType_jmc RMT,RateType_jmc RT
+  6  WHERE RD.RoomNum = RM.RoomNUM AND
+  7  RT.RateType = RT.RateType AND
+  8  ResNum = '1005' AND
+  9  (ResNum,RateAmt) IN
+ 10  (SELECT ResNum,MAX(RateAmt)
+ 11  FROM ResDetail_jmc
+ 12  GROUP BY ResNum);
+
+      Room RoomType        RateType        Amt
+---------- --------------- --------------- --------
+       304 King Bed        Corporate        $149.00
+       304 2 Double Bed    Corporate        $149.00
+       304 King Suite      Corporate        $149.00
+       304 Double Suite    Corporate        $149.00
+       304 King Bed        Standard         $149.00
+       304 2 Double Bed    Standard         $149.00
+       304 King Suite      Standard         $149.00
+       304 Double Suite    Standard         $149.00
+       304 King Bed        Weekend          $149.00
+       304 2 Double Bed    Weekend          $149.00
+       304 King Suite      Weekend          $149.00
+       304 Double Suite    Weekend          $149.00
+
+12 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXVIII for Project 3--
+SQL> SELECT ResNum,CheckIn,CheckOut,
+  2  C.CustID,CustLName,AG.AgentID,AgentLName
+  3  FROM Agent_jmc AG,Customer_jmc C,Reservation_jmc R
+  4  WHERE C.CustID = R.CustID AND
+  5  AG.AgentID = R.AgentID AND
+  6  CheckIn <='26-SEP-2020'
+  7  ORDER BY CheckIn ASC,ResNum ASC;
+
+    RESNUM CHECKIN   CHECKOUT      CUSTID CUSTLNAME               AGENTID AGENTLNAME
+---------- --------- --------- ---------- -------------------- ---------- --------------------
+      1002 01-SEP-20 10-SEP-20        100 Rhodes                        5 May
+      1001 05-SEP-20 08-SEP-20         85 Tanner                       20 Smith
+      1003 09-SEP-20 11-SEP-20         15 Miner                        14 King
+      1004 12-SEP-20 14-SEP-20         77 Jackson                      28 Schultz
+      1005 15-SEP-20 18-SEP-20        119 Vaughn                       20 Smith
+      1007 20-SEP-20 25-SEP-20        100 Rhodes                        5 May
+      1006 24-SEP-20 26-SEP-20         97 Mancha                       14 King
+
+7 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXIX for Project 3--
+SQL> SELECT RD.RoomNum,RM.RoomType,RoomDesc,RateAmt
+  2  FROM Room_jmc RM,RoomType_jmc RMT,ResDetail_jmc RD
+  3  WHERE RD.RoomNum = RM.RoomNum AND
+  4  RM.RoomType = RMT.RoomType AND
+  5  RateAmt > ALL
+  6  (SELECT AVG (RateAmt)
+  7  FROM ResDetail_jmc)
+  8  ORDER BY RateAmt DESC,RoomNum ASC;
+
+   ROOMNUM ROOMTYPE        ROOMDESC                RATEAMT
+---------- --------------- -------------------- ----------
+       226 KS              King Suite                  159
+       227 D               2 Double Bed                149
+       304 KS              King Suite                  149
+       305 D               2 Double Bed                149
+       303 DS              Double Suite                139
+       302 K               King Bed                    129
+       409 D               2 Double Bed                129
+       410 DS              Double Suite                129
+       502 KS              King Suite                  129
+       225 D               2 Double Bed                125
+
+10 rows selected.
+
+SQL> --Part XXX for Project 3--
+SQL> SELECT COUNT (LoyaltyID) AS "LoyaltyID"
+  2  FROM Customer_jmc;
+
+ LoyaltyID
+----------
+         7
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXXI for Project 3--
+SQL> SELECT AG.AgentID AS "AgentID",
+  2  (AgentFName || ' '|| AgentLName) AS "Agent",
+  3  COUNT (ResNum) AS "ResCount"
+  4  FROM Agent_jmc AG,Reservation_jmc R
+  5  WHERE AG.AgentID = R.AgentID
+  6  GROUP BY AG.AgentID,AgentFName,AgentLName
+  7  ORDER BY COUNT (ResNum) DESC;
+
+   AgentID Agent                                       ResCount
+---------- ----------------------------------------- ----------
+         5 Janice May                                         5
+        14 John King                                          2
+        20 Megan Smith                                        2
+        28 Ray Schultz                                        2
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXXII for Project 3--
+SQL> SELECT R.AgentID AS "AgentID",AgentFName AS "FirstName",
+  2  AgentLName AS "LastName",COUNT(ResNum) AS "ResCount"
+  3  FROM Reservation_jmc R ,Agent_jmc AG
+  4  GROUP BY R.AgentID,AgentFName,AgentLName
+  5  HAVING COUNT(ResNum) > 1
+  6  ORDER BY COUNT(ResNum)DESC,R.AgentID ASC;
+
+   AgentID FirstName            LastName               ResCount
+---------- -------------------- -------------------- ----------
+         5 John                 King                          5
+         5 Janice               May                           5
+         5 Ray                  Schultz                       5
+         5 Megan                Smith                         5
+        14 Janice               May                           2
+        14 Ray                  Schultz                       2
+        14 Megan                Smith                         2
+        14 John                 King                          2
+        20 Janice               May                           2
+        20 John                 King                          2
+        20 Ray                  Schultz                       2
+        20 Megan                Smith                         2
+        28 John                 King                          2
+        28 Ray                  Schultz                       2
+        28 Megan                Smith                         2
+        28 Janice               May                           2
+
+16 rows selected.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXXIII for Project 3--
+SQL> SELECT CustID AS "Customer_ID",CustFName AS "First_Name",
+  2  CustLName AS "Last_Name"
+  3  FROM Customer_jmc
+  4  WHERE CustFName LIKE 'W%' OR CustLName Like 'W%'
+  5  ORDER BY CustLName;
+
+Customer_ID First_Name           Last_Name
+----------- -------------------- --------------------
+         85 Wesley               Tanner
+         28 Renee                Walker
+        121 Susan                White
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --Part XXXIV for Project 3--
+SQL> SELECT C.CustID AS "CustID",CustFName AS "FirstName",
+  2  CustLName AS "LastName"
+  3  FROM Customer_jmc C LEFT OUTER JOIN Reservation_jmc R
+  4  ON R.CustID = C.CustID
+  5  GROUP BY C.CustID,CustFName,CustLName
+  6  HAVING COUNT (ResNum) < 1;
+
+    CustID FirstName            LastName
+---------- -------------------- --------------------
+       121 Susan                White
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> --XXXV for Project 3--
+SQL> SELECT RD.ResNum AS "ResNum",RoomNum AS "RoomNum",
+  2  ((CheckOut - CheckIn)*RateAmt) AS "TotalCharge"
+  3  FROM ResDetail_jmc RD,Reservation_jmc R
+  4  WHERE RD.ResNum = R.ResNum AND
+  5  RD.ResNum = '1005';
+
+    ResNum    RoomNum TotalCharge
+---------- ---------- -----------
+      1005        302         387
+      1005        303         417
+      1005        304         447
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> spool off
+SQL> set echo off
+SQL>
+*/
