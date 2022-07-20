@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="742.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label id="name" fx:id="name" layoutX="5.0" layoutY="6.0" text="Name" />
+      <Label fx:id="street" layoutX="6.0" layoutY="34.0" text="Street" />
+      <Label fx:id="city" layoutX="4.0" layoutY="64.0" text="City" />
+      <Label fx:id="state" layoutX="1.0" layoutY="94.0" text="State" />
+      <Label fx:id="zip" layoutX="6.0" layoutY="129.0" text="Zip" />
+      <TextField layoutX="313.0" layoutY="308.0" prefHeight="25.0" prefWidth="295.0" />
+      <TextField layoutX="313.0" layoutY="30.0" prefHeight="25.0" prefWidth="295.0" />
+      <TextField layoutX="313.0" layoutY="60.0" prefHeight="25.0" prefWidth="295.0" />
+      <TextField layoutX="313.0" layoutY="90.0" prefHeight="25.0" prefWidth="295.0" />
+      <TextField layoutX="313.0" layoutY="125.0" prefHeight="25.0" prefWidth="295.0" />
+      <CheckBox layoutX="319.0" layoutY="168.0" mnemonicParsing="false" text="APP" />
+      <CheckBox layoutX="414.0" layoutY="168.0" mnemonicParsing="false" text="MUSIC" />
+      <Label layoutX="4.0" layoutY="168.0" text=" Choose One" />
+      <Label layoutX="1.0" layoutY="194.0" text="Type of Music" />
+      <ComboBox cache="true" cacheHint="QUALITY" layoutX="313.0" layoutY="190.0" prefHeight="25.0" prefWidth="295.0" promptText="CHOOSE ONE" />
+      <Label layoutX="4.0" layoutY="225.0" text="Type Of App" />
+      <RadioButton layoutX="313.0" layoutY="225.0" mnemonicParsing="false" text="GAME" />
+      <RadioButton layoutX="398.0" layoutY="225.0" mnemonicParsing="false" text="PRODUCTIVITY " />
+      <RadioButton layoutX="524.0" layoutY="225.0" mnemonicParsing="false" text="EDUCATION" />
+      <Label layoutX="1.0" layoutY="252.0" text="Enter Title" />
+      <Label layoutX="5.0" layoutY="283.0" text="Date Purchased" />
+      <Label layoutX="1.0" layoutY="312.0" text="Account Number" />
+      <TextField layoutX="314.0" layoutY="248.0" prefHeight="25.0" prefWidth="295.0" />
+      <TextField layoutX="314.0" layoutY="279.0" prefHeight="25.0" prefWidth="295.0" />
+      <Button layoutX="2.0" layoutY="341.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="307.0" text="SUBMIT" />
+      <Button layoutX="316.0" layoutY="341.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="295.0" text="FINISH" />
+      <TextField layoutX="314.0" layoutY="2.0" prefHeight="25.0" prefWidth="295.0" />
+   </children>
+</AnchorPane>
